@@ -39,10 +39,11 @@ set -o nounset  # exit when your script tries to use undeclared variables
 
 # parameters
 __external_ip="${1:-"200.200.200.200"}"
-__company_name="${2:-"My Company Inc"}"
-__country_code="${3:-"US"}"
-__certificate_password="${4:-"password"}"
-__docker_keystore_folder="${5:-"/etc/docker/certs"}"
+__external_dns="${2:-"domain.local"}"
+__company_name="${3:-"My Company Inc"}"
+__country_code="${4:-"US"}"
+__certificate_password="${5:-"password"}"
+__docker_keystore_folder="${6:-"/etc/docker/certs"}"
 
 # binaries
 __CAT=$(which cat)
@@ -69,7 +70,7 @@ ${__OPENSSL} req -new \
                  -x509 \
                  -days 365 \
                  -key "${__docker_keystore_folder}/ca-key.pem" \
-                 -subj "/CN=${__external_ip}/O=${__company_name}/C=${__country_code}" \
+                 -subj "/CN=${__external_dns}/O=${__company_name}/C=${__country_code}" \
                  -passin pass:"${__certificate_password}" \
                  -sha256 \
                  -out "${__docker_keystore_folder}/ca.pem"
@@ -86,7 +87,7 @@ ${__OPENSSL} req -subj "/CN=${__external_ip}" \
 
 # create the extfile.cnf with server info
 ${__CAT} <<EOF > "${__docker_keystore_folder}/extfile.cnf"
-subjectAltName = DNS:localhost,IP:${__external_ip},IP:127.0.0.1
+subjectAltName = DNS:localhost,DNS:${__external_dns},IP:${__external_ip},IP:127.0.0.1
 extendedKeyUsage = serverAuth
 EOF
 
