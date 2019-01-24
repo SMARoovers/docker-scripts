@@ -131,8 +131,8 @@ ${__OPENSSL} x509 -req \
 ${__RM} "${__docker_keystore_folder}/client.csr" "${__docker_keystore_folder}/server.csr"
 
 # set correct permissions
-${__CHMOD} 0400 "${__docker_keystore_folder}/ca-key.pem" "${__docker_keystore_folder}/key.pem" "${__docker_keystore_folder}/server-key.pem"
-${__CHMOD} 0444 "${__docker_keystore_folder}/ca.pem" "${__docker_keystore_folder}/server-cert.pem" "${__docker_keystore_folder}/cert.pem"
+${__CHMOD} 0400 "${__docker_keystore_folder}/ca-key.pem" "${__docker_keystore_folder}/server-key.pem"
+${__CHMOD} 0444 "${__docker_keystore_folder}/ca.pem" "${__docker_keystore_folder}/server-cert.pem" "${__docker_keystore_folder}/cert.pem" "${__docker_keystore_folder}/key.pem"
 
 # create .docker folder and link certs/keys
 ${__MKDIR} --parents /root/.docker
